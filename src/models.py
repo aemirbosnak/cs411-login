@@ -1,6 +1,6 @@
+import re
 from pymongo.errors import InvalidOperation
 from src.extensions import mongo
-from src.services.auth import is_valid_email, is_valid_role
 
 
 def find_user(email, role):
@@ -11,3 +11,15 @@ def find_user(email, role):
             return user
         except InvalidOperation:
             return None
+
+
+def is_valid_email(email):
+    regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+    return re.match(regex, email)
+
+
+def is_valid_role(role):
+    if role in ['admin', 'user']:
+        return True
+    else:
+        return False

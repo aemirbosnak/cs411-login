@@ -1,5 +1,4 @@
 import bcrypt
-import re
 from src.models import find_user
 
 
@@ -21,15 +20,3 @@ def verify_password(provided_password, stored_password):
 
     password_matches = bcrypt.checkpw(encoded_provided_password, encoded_stored_password)
     return password_matches
-
-
-def is_valid_email(email):
-    regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
-    return re.match(regex, email)
-
-
-def is_valid_role(role):
-    if role in ['admin', 'user']:
-        return True
-    else:
-        return False
