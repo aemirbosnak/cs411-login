@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, session, redirect, url_for, flash
 from src.services.auth import login_user
+from src.services.session import initialize_user_session
 
 doctor_blueprint = Blueprint('doctor_blueprint', __name__)
 
@@ -11,12 +12,8 @@ def doctor_login():
         password = request.form['password']
 
         user = login_user(email, password, 'doctor')
-        # TODO: make session initialization into function to remove duplicated code
         if user:
-            session['email'] = user['email']
-            session['role'] = user['role']
-            session['firstName'] = user['firstName']
-            session['lastName'] = user['lastName']
+            initialize_user_session(user)
             return redirect(url_for('dashboard'))
         flash('Invalid credentials')
     return render_template('doctor_login.html')

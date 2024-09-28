@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, session, redirect, url_for, flash
 from src.services.auth import login_user
+from src.services.session import initialize_user_session
 
 admin_blueprint = Blueprint('admin_blueprint', __name__)
 
@@ -12,10 +13,7 @@ def admin_login():
 
         user = login_user(email, password, 'admin')
         if user:
-            session['email'] = user['email']
-            session['role'] = user['role']
-            session['firstName'] = user['firstName']
-            session['lastName'] = user['lastName']
+            initialize_user_session(user)
             return redirect(url_for('dashboard'))
         # TODO: use something other than flash to show errors to user
         flash('Invalid credentials')
