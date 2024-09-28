@@ -11,10 +11,10 @@
         <h1>Welcome to the Login Page</h1>
         <p>Please select your role to log in:</p>
         <div class="role-selection">
-            <a href="{{ url_for('admin_login') }}" class="role-button">Admin Login</a>
+            <a href="{{ url_for('admin_blueprint.admin_login') }}" class="role-button">Admin Login</a>
         </div>
         <div class="role-selection">
-            <a href="{{ url_for('doctor_login') }}" class="role-button">Doctor Login</a>
+            <a href="{{ url_for('doctor_blueprint.doctor_login') }}" class="role-button">Doctor Login</a>
         </div>
     </div>
 </body>
