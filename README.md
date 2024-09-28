@@ -13,8 +13,8 @@ This is a simple Flask application that provides separate login pages for admin 
 1. **Clone the Repository**
 
    ```bash
-   git clone <repository-url>
-   cd <repository-directory>
+   git clone https://github.com/aemirbosnak/cs411-login.git
+   cd cs411-login
 
 2. **Install Requirements**
 
@@ -27,8 +27,9 @@ This is a simple Flask application that provides separate login pages for admin 
    sudo systemctl start mongod
    mongosh
    use mydb
+   ```
 
-   *Add admin user*
+   **Add admin user**
    ```bash
    db.users.insertOne({
       email: "admin@home.com",
@@ -39,8 +40,9 @@ This is a simple Flask application that provides separate login pages for admin 
       createdAt: new Date().getTime(),
       updatedAt: new Date().getTime()
    });
-
-   *Add doctor user*
+   ```
+   
+   **Add doctor user**
    ```bash
    db.users.insertOne({
       email: "doctor@home.com",
@@ -51,10 +53,11 @@ This is a simple Flask application that provides separate login pages for admin 
       createdAt: new Date().getTime(),
       updatedAt: new Date().getTime()
    });
+   ```
 
 4. **Run the Application**
    
    ```bash
    python3 app.py
-
-   The application runs at localhost:5000
+   ```
+   The application runs at `localhost:5000`
