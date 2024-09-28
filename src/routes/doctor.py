@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, session, redirect, url_for, flash
-from src.services.auth import login_user
+from src.services.auth import authenticate_user
 from src.services.session import initialize_user_session
 
 doctor_blueprint = Blueprint('doctor_blueprint', __name__)
@@ -11,7 +11,7 @@ def doctor_login():
         email = request.form['email']
         password = request.form['password']
 
-        user = login_user(email, password, 'doctor')
+        user = authenticate_user(email, password, 'doctor')
         if user:
             initialize_user_session(user)
             return redirect(url_for('dashboard'))

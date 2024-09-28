@@ -17,7 +17,7 @@ def create_user(email, first_name, last_name, phone_number, password, role):
     })
 
 
-def find_by_email_role(email, role):
+def find_user(email, role):
     return mongo.db.Users.find_one({"email": email, "role": role},
                                    {"email": 1, "firstName": 1, "lastName": 1, "role": 1, "password": 1})
 
