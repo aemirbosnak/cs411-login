@@ -1,9 +1,13 @@
-from flask import Flask, render_template, request, session, redirect, url_for, flash
-from models import mongo, find_by_email_role
-import bcrypt
-from config import Config
+import os
 
-app = Flask(__name__)
+from flask import Flask, render_template, request, session, redirect, url_for, flash
+from src.models import mongo, find_by_email_role
+import bcrypt
+from src.config import Config
+
+app = Flask(__name__,
+            template_folder=os.path.join(os.path.dirname(__file__), '..', 'templates'),
+            static_folder=os.path.join(os.path.dirname(__file__), '..', 'static'))
 app.config.from_object(Config)
 
 # Init MongoDB
