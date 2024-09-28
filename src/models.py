@@ -1,8 +1,6 @@
 import bcrypt
-from flask_pymongo import PyMongo
+from src.extensions import mongo
 from datetime import datetime
-
-mongo = PyMongo()
 
 
 def create_user(email, first_name, last_name, phone_number, password, role):
