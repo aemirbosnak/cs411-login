@@ -1,10 +1,10 @@
 from flask import Blueprint, render_template, request, session, redirect, url_for, flash
 from src.services.auth import login_user
 
-doctor_bp = Blueprint('doctor_bp', __name__)
+doctor_blueprint = Blueprint('doctor_blueprint', __name__)
 
 
-@doctor_bp.route('/doctor/login', methods=['GET', 'POST'])
+@doctor_blueprint.route('/doctor/login', methods=['GET', 'POST'])
 def doctor_login():
     if request.method == 'POST':
         email = request.form['email']
