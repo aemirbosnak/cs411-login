@@ -1,9 +1,9 @@
 import os
-
-from flask import Flask, render_template, request, session, redirect, url_for, flash
-from src.models import mongo, find_by_email_role
-import bcrypt
+from flask import Flask, render_template, redirect, url_for, session
 from src.config import Config
+from src.extensions import mongo
+from src.routes.admin import admin_blueprint
+from src.routes.doctor import doctor_blueprint
 
 app = Flask(__name__,
             template_folder=os.path.join(os.path.dirname(__file__), '..', 'templates'),
@@ -12,6 +12,10 @@ app.config.from_object(Config)
 
 # Init MongoDB
 mongo.init_app(app)
+
+# Register blueprints
+app.register_blueprint(admin_blueprint)
+app.register_blueprint(doctor_blueprint)
 
 
 @app.route('/')
@@ -24,44 +28,6 @@ def home():
     return render_template('home.html')
 
 
-# Admin Login
-@app.route('/admin/login', methods=['GET', 'POST'])
-def admin_login():
-    if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
-
-        user = find_by_email_role(email, 'admin')
-        if user and bcrypt.checkpw(password.encode('utf-8', user['password']), user['password'].encode('utf-8')):
-            session['email'] = user['email']
-            session['role'] = user['role']
-            session['firstName'] = user['firstName']
-            session['lastName'] = user['lastName']
-            return redirect(url_for('dashboard'))
-        flash('Invalid credentials')
-    return render_template('admin_login.html')
-
-
-# Doctor Login
-@app.route('/doctor/login', methods=['GET', 'POST'])
-def doctor_login():
-    if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
-
-        user = find_by_email_role(email, 'doctor')
-        print(user)
-        if user and bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
-            session['email'] = user['email']
-            session['role'] = user['role']
-            session['firstName'] = user['firstName']
-            session['lastName'] = user['lastName']
-            print("success")
-            return redirect(url_for('dashboard'))
-        flash('Invalid credentials')
-    return render_template('doctor_login.html')
-
-
 # Common Dashboard
 @app.route('/dashboard')
 def dashboard():
@@ -70,7 +36,7 @@ def dashboard():
                                firstName=session['firstName'],
                                lastName=session['lastName'],
                                role=session['role'])
-    return redirect(url_for('doctor_login'))
+    return redirect(url_for('home'))
 
 
 @app.route('/logout')
