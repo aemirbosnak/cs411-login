@@ -9,6 +9,7 @@ app = Flask(__name__,
             template_folder=os.path.join(os.path.dirname(__file__), '..', 'templates'),
             static_folder=os.path.join(os.path.dirname(__file__), '..', 'static'))
 app.config.from_object(Config)
+app.permanent_session_lifetime = Config.PERMANENT_SESSION_LIFETIME
 
 # Init MongoDB
 mongo.init_app(app)
@@ -17,6 +18,13 @@ mongo.init_app(app)
 app.register_blueprint(admin_blueprint)
 app.register_blueprint(doctor_blueprint)
 
+""" MIDDLEWARE FUNCTIONS """
+
+
+@app.before_request
+def make_session_permanent():
+    session.permanent = True
+
 
 @app.after_request
 def add_security_headers(response):
@@ -24,6 +32,9 @@ def add_security_headers(response):
     response.headers['X-Content-Type-Options'] = 'nosniff'
     response.headers['X-Frame-Options'] = 'DENY'
     return response
+
+
+""" ROUTING FUNCTIONS"""
 
 
 @app.route('/')
