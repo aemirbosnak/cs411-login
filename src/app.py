@@ -18,6 +18,14 @@ app.register_blueprint(admin_blueprint)
 app.register_blueprint(doctor_blueprint)
 
 
+@app.after_request
+def add_security_headers(response):
+    response.headers['Content-Security-Policy'] = "default-src 'self'; script-src 'self';"
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['X-Frame-Options'] = 'DENY'
+    return response
+
+
 @app.route('/')
 def index():
     return redirect(url_for('home'))
