@@ -1,6 +1,6 @@
 import re
 from pymongo.errors import InvalidOperation
-from src.extensions import mongo
+from backend.src.extensions import mongo
 
 
 def find_user(email, role):

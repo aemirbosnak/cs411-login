@@ -1,5 +1,5 @@
 import bcrypt
-from src.models import find_user
+from backend.src.models import find_user
 
 
 def authenticate_user(email, password, role):

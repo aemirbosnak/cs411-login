@@ -1,8 +1,8 @@
 import os
 from flask import Flask, session
-from src.config import Config
-from src.extensions import mongo
-from src.routes.auth import auth_bp
+from backend.src.config import Config
+from backend.src.extensions import mongo
+from backend.src.routes.auth import auth_bp
 
 app = Flask(__name__)
 app.config.from_object(Config)
