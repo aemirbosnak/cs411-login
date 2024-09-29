@@ -1,6 +1,13 @@
 import re
+from enum import Enum
 from pymongo.errors import InvalidOperation
 from config import Config
+
+
+class UserRole(Enum):
+    ADMIN = 'admin'
+    DOCTOR = 'doctor'
+    # Add more roles as needed
 
 
 def find_user(email, role):
@@ -19,7 +26,4 @@ def is_valid_email(email):
 
 
 def is_valid_role(role):
-    if role in ['admin', 'doctor']:
-        return True
-    else:
-        return False
+    return role in UserRole.__members__.values()
