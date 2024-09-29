@@ -1,8 +1,8 @@
 import datetime
 import jwt
 import bcrypt
-from backend.src.models import find_user
-from backend.src.config import Config
+from backend.models import find_user
+from backend.config import Config
 
 SECRET_KEY = Config.JWT_SECRET_KEY
 

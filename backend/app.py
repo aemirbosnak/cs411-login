@@ -1,12 +1,12 @@
-import os
 from flask import Flask, session
-from backend.src.config import Config
-from backend.src.extensions import mongo
-from backend.src.routes.auth import auth_bp
+from flask_cors import CORS
+from backend.config import Config
+from backend.extensions import mongo
+from backend.routes.auth import auth_bp
 
 app = Flask(__name__)
 app.config.from_object(Config)
-app.permanent_session_lifetime = Config.PERMANENT_SESSION_LIFETIME
+CORS(app)
 
 # Init MongoDB
 mongo.init_app(app)
