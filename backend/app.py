@@ -1,5 +1,3 @@
-import os
-from pymongo import MongoClient
 from flask import Flask, session
 from flask_cors import CORS
 from config import Config
