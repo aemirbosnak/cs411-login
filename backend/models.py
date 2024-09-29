@@ -1,12 +1,12 @@
 import re
 from pymongo.errors import InvalidOperation
-from extensions import mongo
+from config import Config
 
 
 def find_user(email, role):
     if is_valid_email(email) and is_valid_role(role):
         try:
-            user = mongo.db.Users.find_one({"email": email, "role": role},
+            user = Config.mongo_db.Users.find_one({"email": email, "role": role},
                                            {"email": 1, "firstName": 1, "lastName": 1, "role": 1, "password": 1})
             return user
         except InvalidOperation:

@@ -8,6 +8,8 @@ services:
       - "5000:5000"
     networks:
       - mynetwork
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/mydb
 
   frontend-admin:
     build:
@@ -22,6 +24,13 @@ services:
       context: ./frontend-doctor
     ports:
       - "5002:80"
+    networks:
+      - mynetwork
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27000:27017"
     networks:
       - mynetwork
 

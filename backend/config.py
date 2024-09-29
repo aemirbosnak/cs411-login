@@ -1,9 +1,13 @@
 import os
+from pymongo import MongoClient
 
 
 class Config:
-    MONGO_URI = 'mongodb://localhost:27017/mydb'
     SECRET_KEY = os.urandom(24)
+
+    MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/mydb")
+    mongo_client = MongoClient(MONGO_URI)
+    mongo_db = mongo_client.mydb
 
     # JWT settings
     JWT_EXPIRATION_DELTA = 3600  # Token expiration time in seconds (1 hour)
