@@ -71,7 +71,14 @@ the container and add entries manually (this will be fixed in the future with a 
     mydb> db.Users.insertOne({ email: "doctor@home.com", firstName: "Adam", lastName: "Smith", password: <bcrypt encrypted and utf-8 encoded password>, role: "doctor", createdAt: new Date().getTime(), updatedAt: new Date().getTime() })
     ```
 
-3. **TODO** Encrypting the password to be added into the database:
+3. Encrypting the password to be added into the database:
+    
+    ```bash
+    $ python3 -c 'import bcrypt; print(bcrypt.hashpw(<your-password>.encode(), bcrypt.gensalt()).decode())'
+    output -> $2b$12$7rhIwwmCbC6o.s/2k8bPYecZPhf2.JIBYYDXaRDiHBUuPX5Cq6/Pa
+    ```
+   
+    We can log in with `<your-password>` after encrypting it like above and putting the output in the database.
 
 
 4. Now that we have an admin and doctor account we can go to their respective login pages to see if we can log in.
