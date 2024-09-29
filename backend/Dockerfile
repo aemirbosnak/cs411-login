@@ -5,6 +5,8 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-COPY ./src /app/src
+COPY . .
 
-CMD ["python", "/app/src/app.py"]
+ENV PYTHONPATH=/app
+
+CMD ["python", "-m", "app"]

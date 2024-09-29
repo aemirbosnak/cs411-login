@@ -1,8 +1,8 @@
 from flask import Flask, session
 from flask_cors import CORS
-from backend.config import Config
-from backend.extensions import mongo
-from backend.routes.auth import auth_bp
+from config import Config
+from extensions import mongo
+from routes.auth import auth_bp
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -29,4 +29,4 @@ def add_security_headers(response):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
