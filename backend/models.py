@@ -19,7 +19,7 @@ def is_valid_email(email):
 
 
 def is_valid_role(role):
-    if role in ['admin', 'user']:
+    if role in ['admin', 'doctor']:
         return True
     else:
         return False
