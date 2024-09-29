@@ -1,7 +1,13 @@
 import re
 from enum import Enum
 from pymongo.errors import InvalidOperation
-from src.extensions import mongo
+from config import Config
+
+
+class UserRole(Enum):
+    ADMIN = 'admin'
+    DOCTOR = 'doctor'
+    # Add more roles as needed
 
 
 class UserRole(Enum):
@@ -13,7 +19,7 @@ class UserRole(Enum):
 def find_user(email, role):
     if is_valid_email(email) and is_valid_role(role):
         try:
-            user = mongo.db.Users.find_one({"email": email, "role": role},
+            user = Config.mongo_db.Users.find_one({"email": email, "role": role},
                                            {"email": 1, "firstName": 1, "lastName": 1, "role": 1, "password": 1})
             return user
         except InvalidOperation:
