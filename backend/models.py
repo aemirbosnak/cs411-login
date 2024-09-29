@@ -10,12 +10,6 @@ class UserRole(Enum):
     # Add more roles as needed
 
 
-class UserRole(Enum):
-    ADMIN = 'admin'
-    DOCTOR = 'doctor'
-    # Add more roles as needed
-
-
 def find_user(email, role):
     if is_valid_email(email) and is_valid_role(role):
         try:
