@@ -1,1 +1,0 @@
-db.Users.insertOne({ email: "doctor@home.com", firstName: "Adam", lastName: "Smith", password: "$2b$12$lQmb5PzImo1s60CEuGZhveZCcTB8LA60elqvXA32m6fA1PiUnXRd6", role: "doctor", createdAt: new Date().getTime(), updatedAt: new Date().getTime() })
