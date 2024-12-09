@@ -6,26 +6,61 @@ body {
     padding: 0;
 }
 
+/* Container for the patient list */
 .dashboard-container {
-    width: 80%;
-    max-width: 600px;
-    margin: 50px auto;
+    width: 100%; /* Make the container span the full width */
+    max-width: 1200px; /* Optional: Limit the maximum width for large screens */
+    margin: 0 auto; /* Center the container horizontally */
     padding: 20px;
     background-color: #1e1e1e;
+    color: #e0e0e0;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     border-radius: 5px;
-    text-align: center;
 }
 
-h2 {
-    margin-bottom: 20px;
-    color: #ffffff;
-}
-
-form, table {
-    width: 100%;
+/* Table styling */
+table {
+    width: 100%; /* Make the table span the full width */
+    border-collapse: collapse; /* Ensure no spacing between table cells */
     margin-top: 20px;
+    background-color: #121212; /* Match the site's dark theme */
+    color: #e0e0e0;
+}
+
+th, td {
     text-align: left;
+    padding: 10px;
+    border: 1px solid #e0e0e0; /* Add a border to separate cells */
+    word-wrap: break-word; /* Ensure long text breaks into the next line */
+}
+
+th {
+    background-color: #1e1e1e; /* Darker background for header */
+    color: #ffffff;
+    text-transform: uppercase; /* Optional: Make headers uppercase for readability */
+}
+
+td {
+    background-color: #1e1e1e;
+}
+
+/* Spinner styling */
+.loading-spinner {
+    text-align: center;
+    font-size: 16px;
+    margin: 20px;
+    color: #5bc0de;
+}
+
+/* Make the table responsive on smaller screens */
+@media screen and (max-width: 768px) {
+    table {
+        font-size: 12px; /* Reduce font size on smaller screens */
+    }
+
+    th, td {
+        padding: 8px;
+    }
 }
 
 input, select {
@@ -49,21 +84,4 @@ input, select {
 
 .submit-button:hover {
     background-color: #4cae4c;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-table th, table td {
-    padding: 10px;
-    border: 1px solid #e0e0e0;
-    text-align: left;
-}
-
-table th {
-    background-color: #1e1e1e;
-    color: #ffffff;
 }

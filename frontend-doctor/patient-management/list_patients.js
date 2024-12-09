@@ -32,19 +32,25 @@ document.addEventListener('DOMContentLoaded', function () {
                         <td>${patient.firstName}</td>
                         <td>${patient.lastName}</td>
                         <td>${patient.dob}</td>
+                        <td>${patient.gender || 'N/A'}</td>
                         <td>${patient.address}</td>
+                        <td>${patient.contactNumber || 'N/A'}</td>
+                        <td>${patient.emergencyContact || 'N/A'}</td>
+                        <td>${patient.insuranceInfo || 'N/A'}</td>
+                        <td>${patient.occupation || 'N/A'}</td>
+                        <td>${patient.maritalStatus || 'N/A'}</td>
                         <td>${patient.complaint || 'N/A'}</td>
                         <td>${patient.severity || 'N/A'}</td>
                     `;
                     tableBody.appendChild(row);
                 });
             } else {
-                tableBody.innerHTML = `<tr><td colspan="6">No patients found.</td></tr>`;
+                tableBody.innerHTML = `<tr><td colspan="12">No patients found.</td></tr>`;
             }
         })
         .catch(error => {
             console.error('Error fetching patients:', error);
-            tableBody.innerHTML = `<tr><td colspan="6">Error loading patients.</td></tr>`;
+            tableBody.innerHTML = `<tr><td colspan="12">Error loading patients.</td></tr>`;
         })
         .finally(() => {
             spinner.style.display = 'none'; // Hide spinner

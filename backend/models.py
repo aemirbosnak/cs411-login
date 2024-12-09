@@ -42,10 +42,16 @@ def add_patient(data):
         "firstName": data['firstName'],
         "lastName": data['lastName'],
         "dob": data['dob'],
+        "gender": data['gender'],
         "address": data['address'],
+        "contactNumber": data['contactNumber'],
+        "emergencyContact": data['emergencyContact'],
+        "insuranceInfo": data.get('insuranceInfo', 'N/A'),
+        "occupation": data.get('occupation', 'N/A'),
+        "maritalStatus": data.get('maritalStatus', 'N/A'),
+        "complaint": data.get('complaint', 'N/A'),
+        "severity": data.get('severity', 'low'),
         "doctorId": data['doctorId'],
-        "complaint": data.get('complaint', 'N/A'),  # Default to 'N/A' if not provided
-        "severity": data.get('severity', 'low'),  # Default to 'low' if not provided
         "createdAt": datetime.datetime.now(),
         "updatedAt": datetime.datetime.now(),
     }
@@ -60,8 +66,13 @@ def list_patients(doctor_id):
         "firstName": 1,
         "lastName": 1,
         "dob": 1,
+        "gender": 1,
         "address": 1,
-        "doctorId": 1,
+        "contactNumber": 1,
+        "emergencyContact": 1,
+        "insuranceInfo": 1,
+        "occupation": 1,
+        "maritalStatus": 1,
         "complaint": 1,
         "severity": 1
     }))
