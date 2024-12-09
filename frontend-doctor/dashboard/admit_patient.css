@@ -23,22 +23,30 @@ h2 {
     color: #ffffff;
 }
 
-.logout-button {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #5bc0de;
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.submit-button {
+    background-color: #5cb85c;
     color: white;
+    padding: 10px;
     border: none;
     border-radius: 5px;
-    text-decoration: none;
     font-size: 16px;
-    margin-top: 10px;
+    cursor: pointer;
 }
 
-.logout-button:hover {
-    background-color: #31b0d5;
-}
-
-.logout-button {
-    background-color: #d9534f;
+.submit-button:hover {
+    background-color: #4cae4c;
 }
