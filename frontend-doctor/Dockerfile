@@ -5,6 +5,7 @@ FROM nginx:alpine
 COPY ./dashboard /usr/share/nginx/html/dashboard
 COPY ./login /usr/share/nginx/html/login
 COPY ./patient-management /usr/share/nginx/html/patient-management
+COPY ./components /usr/share/nginx/html/components
 
 # Expose port 80 to the outside world
 EXPOSE 80
