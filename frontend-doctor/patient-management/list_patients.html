@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient List</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav>
+        <a href="../dashboard/dashboard.html">Dashboard</a>
+        <a href="admit_patient.html">Admit Patient</a>
+        <a href="list_patients.html">View Patients</a>
+        <button id="logoutButton" class="logout-button">Logout</button>
+    </nav>
+    <div class="dashboard-container">
+        <h2>Admitted Patients</h2>
+        <table id="patientsTable">
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Date of Birth</th>
+                    <th>Address</th>
+                    <th>Complaint</th>
+                    <th>Severity</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Rows will be populated dynamically -->
+            </tbody>
+        </table>
+    </div>
+
+    <script src="list_patients.js"></script>
+</body>
+</html>

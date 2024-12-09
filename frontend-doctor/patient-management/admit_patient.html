@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admit Patient</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav>
+        <a href="../dashboard/dashboard.html">Dashboard</a>
+        <a href="admit_patient.html">Admit Patient</a>
+        <a href="list_patients.html">View Patients</a>
+        <button id="logoutButton" class="logout-button">Logout</button>
+    </nav>
+    <div class="dashboard-container">
+        <h2>Admit New Patient</h2>
+        <form id="admitPatientForm">
+            <input type="text" id="firstName" placeholder="First Name" required>
+            <input type="text" id="lastName" placeholder="Last Name" required>
+            <input type="date" id="dob" placeholder="Date of Birth" required>
+            <input type="text" id="address" placeholder="Address" required>
+
+            <label for="complaint">Complaint</label>
+            <select id="complaint">
+                <option value="headache">Headache</option>
+                <option value="fever">Fever</option>
+                <option value="injury">Injury</option>
+                <option value="other">Other</option>
+            </select>
+
+            <label for="severity">Severity</label>
+            <select id="severity">
+                <option value="low">Low</option>
+                <option value="moderate">Moderate</option>
+                <option value="high">High</option>
+                <option value="critical">Critical</option>
+            </select>
+
+            <button type="submit" class="submit-button">Admit Patient</button>
+        </form>
+    </div>
+
+    <script src="admit_patient.js"></script>
+</body>
+</html>

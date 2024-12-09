@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const token = localStorage.getItem('token');
     const admitForm = document.getElementById('admitPatientForm');
+    const token = localStorage.getItem('token'); // Ensure token is stored in localStorage
 
     if (!token) {
         alert('Not authorized. Redirecting to login...');
@@ -17,6 +17,8 @@ document.addEventListener('DOMContentLoaded', function () {
             lastName: document.getElementById('lastName').value,
             dob: document.getElementById('dob').value,
             address: document.getElementById('address').value,
+            complaint: document.getElementById('complaint').value,
+            severity: document.getElementById('severity').value,
             doctorId: doctorId
         };
 
@@ -41,4 +43,6 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('Error:', error);
         });
     });
+
+    console.log('Event listener attached to admit form');
 });
