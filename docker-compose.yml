@@ -31,7 +31,12 @@ services:
       - "27000:27017"
     networks:
       - mynetwork
+    volumes:
+      - mongo-data:/data/db
 
 networks:
   mynetwork:
     driver: bridge
+
+volumes:
+  mongo-data:
