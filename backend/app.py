@@ -1,7 +1,9 @@
 from flask import Flask, session
 from flask_cors import CORS
+
 from config import Config
 from routes.auth import auth_bp
+from routes.patient import patient_bp
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -9,6 +11,7 @@ CORS(app)
 
 # Register blueprints
 app.register_blueprint(auth_bp)
+app.register_blueprint(patient_bp)
 
 
 @app.before_request
