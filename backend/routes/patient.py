@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from models import add_patient, list_patients
+from models import add_patient, list_patients, list_admitted_patients_not_in_inpatients
 
 patient_bp = Blueprint('patient', __name__)
 
@@ -31,3 +31,18 @@ def get_patients():
         return jsonify({"patients": patients}), 200
     except Exception as e:
         return jsonify({"message": f"Error fetching patients: {str(e)}"}), 500
+
+
+@patient_bp.route('/api/patient/admitted', methods=['GET'])
+def get_admitted_not_in_inpatients():
+    # Check if user is admin
+    # Assume you have a function `check_admin_role()` that verifies the role from the token
+    # Pseudocode:
+    # if not check_admin_role(request):
+    #     return jsonify({"message": "Unauthorized"}), 403
+
+    try:
+        patients = list_admitted_patients_not_in_inpatients()
+        return jsonify({"patients": patients}), 200
+    except Exception as e:
+        return jsonify({"message": f"Error fetching admitted patients: {str(e)}"}), 500

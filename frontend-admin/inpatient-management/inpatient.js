@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Load all inpatients
     function loadInpatients() {
+        console.log("list inpatients endpont called");
         fetch('http://localhost:5000/api/inpatient/list', {
             method: 'GET',
             headers: {
@@ -34,39 +35,6 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .catch(error => console.error('Error loading inpatients:', error));
     }
-
-    // Add new inpatient
-    document.getElementById('addInpatientForm').addEventListener('submit', function (event) {
-        event.preventDefault();
-
-        const inpatientData = {
-            patientId: document.getElementById('patientId').value.trim(),
-            roomNumber: document.getElementById('roomNumber').value.trim(),
-            assignedDoctor: document.getElementById('assignedDoctor').value.trim(),
-            admissionReason: document.getElementById('admissionReason').value.trim(),
-            admissionDate: document.getElementById('admissionDate').value,
-        };
-
-        fetch('http://localhost:5000/api/inpatient/add', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(inpatientData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.message === 'Inpatient entry created successfully') {
-                alert('Inpatient added successfully!');
-                document.getElementById('addInpatientForm').reset();
-                loadInpatients(); // Refresh the table
-            } else {
-                alert('Error: ' + data.message);
-            }
-        })
-        .catch(error => console.error('Error adding inpatient:', error));
-    });
-
+    
     loadInpatients(); // Load inpatients on page load
 });
