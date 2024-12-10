@@ -3,3 +3,5 @@ Flask-PyMongo==2.3.0
 bcrypt==3.2.0
 PyJWT==2.9.0
 Flask-Cors==5.0.0
+pytest==8.3.4
+mongomock==4.3.0
