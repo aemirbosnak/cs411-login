@@ -77,3 +77,46 @@ def list_patients(doctor_id):
         "severity": 1
     }))
     return [convert_objectid_to_string(patient) for patient in patients]
+
+
+def add_inpatient(data):
+    """Add a new inpatient entry."""
+    inpatient = {
+        "patientId": data['patientId'],
+        "roomNumber": data['roomNumber'],
+        "admittedBy": data.get('admittedBy', 'admin@hospital.com'), # Default to admin
+        "assignedDoctor": data['assignedDoctor'],
+        "admissionReason": data['admissionReason'],
+        "admissionDate": data['admissionDate'],
+        "dischargeDate": data.get('dischargeDate'), # Optional
+        "createdAt": datetime.datetime.now(),
+        "updatedAt": datetime.datetime.now(),
+    }
+    result = Config.mongo_db.Inpatients.insert_one(inpatient)
+    inpatient['_id'] = str(result.inserted_id)
+    return inpatient
+
+
+def list_inpatients():
+    """List all inpatients (for admin)."""
+    inpatients = list(Config.mongo_db.Inpatients.find({}, {
+        "patientId": 1,
+        "roomNumber": 1,
+        "assignedDoctor": 1,
+        "admissionReason": 1,
+        "admissionDate": 1,
+        "dischargeDate": 1
+    }))
+    return [convert_objectid_to_string(inpatient) for inpatient in inpatients]
+
+
+def list_doctor_inpatients(doctor_email):
+    """List inpatients for a specific doctor."""
+    inpatients = list(Config.mongo_db.Inpatients.find({"assignedDoctor": doctor_email}, {
+        "patientId": 1,
+        "roomNumber": 1,
+        "admissionReason": 1,
+        "admissionDate": 1,
+        "dischargeDate": 1
+    }))
+    return [convert_objectid_to_string(inpatient) for inpatient in inpatients]
