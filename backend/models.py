@@ -11,9 +11,12 @@ class UserRole(Enum):
     DOCTOR = 'doctor'
     # Add more roles as needed
 
+
 def convert_objectid_to_string(document):
     if '_id' in document:
         document['_id'] = str(document['_id'])
+    if 'patientId' in document and isinstance(document['patientId'], ObjectId):
+        document['patientId'] = str(document['patientId'])
     return document
 
 
@@ -77,3 +80,61 @@ def list_patients(doctor_id):
         "severity": 1
     }))
     return [convert_objectid_to_string(patient) for patient in patients]
+
+
+def list_admitted_patients_not_in_inpatients():
+    admitted_patient_ids = Config.mongo_db.Patients.distinct("_id")
+    inpatient_patient_ids = Config.mongo_db.Inpatients.distinct("patientId")
+    difference = set(admitted_patient_ids) - set(inpatient_patient_ids)
+    patients = list(Config.mongo_db.Patients.find({"_id": {"$in": list(difference)}}))
+    return [convert_objectid_to_string(p) for p in patients]
+
+
+def add_inpatient(data):
+    inpatient = {
+        "patientId": ObjectId(data['patientId']),
+        "roomNumber": data['roomNumber'],
+        "assignedDoctor": data['assignedDoctor'],
+        "admissionReason": data['admissionReason'],
+        "admissionDate": data['admissionDate'],
+        "operationDetails": data.get('operationDetails', None),
+        "dischargeDate": data.get('dischargeDate', None),
+        "createdAt": datetime.datetime.now(),
+        "updatedAt": datetime.datetime.now()
+    }
+    result = Config.mongo_db.Inpatients.insert_one(inpatient)
+    inpatient['_id'] = str(result.inserted_id)
+    inpatient['patientId'] = str(inpatient['patientId'])
+    return inpatient
+
+
+def update_inpatient(inpatient_id, updates):
+    # updates could include roomNumber, operationDetails, dischargeDate
+    updates["updatedAt"] = datetime.datetime.now()
+    Config.mongo_db.Inpatients.update_one({"_id": ObjectId(inpatient_id)}, {"$set": updates})
+    return True
+
+
+def list_inpatients():
+    """List all inpatients (for admin)."""
+    inpatients = list(Config.mongo_db.Inpatients.find({}, {
+        "patientId": 1,
+        "roomNumber": 1,
+        "assignedDoctor": 1,
+        "admissionReason": 1,
+        "admissionDate": 1,
+        "dischargeDate": 1
+    }))
+    return [convert_objectid_to_string(inpatient) for inpatient in inpatients]
+
+
+def list_doctor_inpatients(doctor_email):
+    """List inpatients for a specific doctor."""
+    inpatients = list(Config.mongo_db.Inpatients.find({"assignedDoctor": doctor_email}, {
+        "patientId": 1,
+        "roomNumber": 1,
+        "admissionReason": 1,
+        "admissionDate": 1,
+        "dischargeDate": 1
+    }))
+    return [convert_objectid_to_string(inpatient) for inpatient in inpatients]

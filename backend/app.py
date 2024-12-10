@@ -4,14 +4,16 @@ from flask_cors import CORS
 from config import Config
 from routes.auth import auth_bp
 from routes.patient import patient_bp
+from routes.inpatient import inpatient_bp
 
 app = Flask(__name__)
 app.config.from_object(Config)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}}, allow_headers=["Content-Type", "Authorization"])
 
 # Register blueprints
 app.register_blueprint(auth_bp)
 app.register_blueprint(patient_bp)
+app.register_blueprint(inpatient_bp)
 
 
 @app.before_request
