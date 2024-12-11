@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (!token) {
         alert('Not authorized. Redirecting to login...');
-        window.location.href = '../login/login.html';
+        window.location.href = '/login/';
         return;
     }
 
