@@ -5,8 +5,7 @@ The microservice architecture approach separates backend and frontend as individ
 the frontend to role based projects (admin, doctor, patient, etc.).
 
 - **Backend**: A Flask-based API that handles authentication.
-- **Frontend-Admin**: A simple HTML, CSS, and JavaScript-based application for admin users.
-- **Frontend-Doctor**: A similar frontend for doctor users.
+- **Frontend**: A simple HTML, CSS, and JavaScript-based application.
 
 ## Services Overview
 
@@ -48,8 +47,7 @@ the frontend to role based projects (admin, doctor, patient, etc.).
    
 This will build and start the following services:
 - Backend on `localhost:5000`
-- Admin frontend on `localhost:5001`
-- Doctor frontend on `localhost:5002`
+- Frontend on `localhost:5001`
 - MongoDB on `localhost:27000`
 
 ### Usage
@@ -82,8 +80,7 @@ the container and add entries manually (this will be fixed in the future with a 
 
 
 4. Now that we have an admin and doctor account we can go to their respective login pages to see if we can log in.
-   - For admin go to `localhost:5001/login/login.html` and enter credentials.
-   - For doctor go to `localhost:5002/login/login.html` and enter credentials.
+   - To login go to `localhost:5001/login/` and enter credentials.
 
 
 ### Extending the application

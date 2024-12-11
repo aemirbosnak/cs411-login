@@ -9,19 +9,11 @@ services:
     environment:
       - MONGO_URI=mongodb://mongo:27017/mydb
 
-  frontend-admin:
+  frontend:
     build:
-      context: ./frontend-admin
+      context: ./frontend
     ports:
       - "5001:80"
-    networks:
-      - mynetwork
-
-  frontend-doctor:
-    build:
-      context: ./frontend-doctor
-    ports:
-      - "5002:80"
     networks:
       - mynetwork
 
