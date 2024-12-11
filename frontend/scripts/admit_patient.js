@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        fetch('http://localhost:5000/api/patient/admit', {
+        fetch('http://localhost:5003/api/patient/admit', {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
