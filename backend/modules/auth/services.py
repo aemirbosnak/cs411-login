@@ -1,7 +1,7 @@
 import datetime
 import jwt
 import bcrypt
-from models import find_user
+from models.user_model import find_user
 from config import Config
 
 SECRET_KEY = Config.JWT_SECRET_KEY

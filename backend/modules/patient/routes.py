@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from models import add_patient, list_patients, list_admitted_patients_not_in_inpatients
+from models.patient_model import add_patient, list_patients, list_admitted_patients_not_in_inpatients
 
 patient_bp = Blueprint('patient', __name__)
 

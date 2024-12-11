@@ -1,12 +1,12 @@
-# backend/routes/inpatient.py
+# backend/routes/routes.py
 from flask import Blueprint, request, jsonify
-from models import add_inpatient, list_inpatients, list_doctor_inpatients, update_inpatient
+from models.admission_model import add_inpatient, list_inpatients, list_doctor_inpatients, update_inpatient
 from utils import check_admin_role, check_doctor_role
 
-inpatient_bp = Blueprint('inpatient', __name__)
+admission_bp = Blueprint('admission', __name__)
 
 
-@inpatient_bp.route('/api/inpatient/add', methods=['POST'])
+@admission_bp.route('/api/inpatient/add', methods=['POST'])
 def add_inpatient_entry():
     # Admin only
     if not check_admin_role(request):
@@ -24,7 +24,7 @@ def add_inpatient_entry():
         return jsonify({"message": f"Error creating inpatient entry: {str(e)}"}), 500
 
 
-@inpatient_bp.route('/api/inpatient/list', methods=['GET'])
+@admission_bp.route('/api/inpatient/list', methods=['GET'])
 def list_all_inpatients():
     # Admin only
     if not check_admin_role(request):
@@ -36,7 +36,7 @@ def list_all_inpatients():
         return jsonify({"message": f"Error fetching inpatients: {str(e)}"}), 500
 
 
-@inpatient_bp.route('/api/inpatient/list-doctor', methods=['GET'])
+@admission_bp.route('/api/inpatient/list-doctor', methods=['GET'])
 def list_inpatients_for_doctor():
     # Doctor only
     if not check_doctor_role(request):
@@ -52,7 +52,7 @@ def list_inpatients_for_doctor():
         return jsonify({"message": f"Error fetching inpatients for doctor: {str(e)}"}), 500
 
 
-@inpatient_bp.route('/api/inpatient/update/<inpatient_id>', methods=['PUT'])
+@admission_bp.route('/api/inpatient/update/<inpatient_id>', methods=['PUT'])
 def update_inpatient(inpatient_id):
     # Admin only
     if not check_admin_role(request):
