@@ -1,8 +1,10 @@
 import pytest
 import datetime
-from models import add_patient, list_patients, add_inpatient, update_inpatient, list_inpatients, list_doctor_inpatients, list_admitted_patients_not_in_inpatients
 from config import Config
 from bson import ObjectId
+
+from models.patient_model import add_patient, list_patients, list_admitted_patients_not_in_inpatients
+from models.admission_model import add_inpatient, update_inpatient, list_inpatients, list_doctor_inpatients
 
 
 def test_add_patient(mock_db):

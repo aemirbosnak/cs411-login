@@ -1,7 +1,7 @@
 import pytest
 import bcrypt
 from config import Config
-from services.auth import authenticate_user, verify_password
+from modules.auth.services import (authenticate_user, verify_password)
 from bson import ObjectId
 
 

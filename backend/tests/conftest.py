@@ -8,8 +8,7 @@ def mock_db():
     # Replace the mongo_db with a mongomock instance for testing
     Config.mongo_db = mongomock.MongoClient().mydb
     yield
-    # After tests complete, no cleanup needed since mongomock is in-memory
-
+    # After tests complete, no cleanup needed
 
 @pytest.fixture(scope="function")
 def test_client(mock_db):
