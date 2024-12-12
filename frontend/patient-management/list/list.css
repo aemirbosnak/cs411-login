@@ -1,0 +1,87 @@
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #2b2b2b, #a83232);
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+}
+
+.patient-container {
+    max-width: 1200px;
+    width: 100%;
+    background: #f4f4f4;
+    padding: 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    height: 80vh;
+    overflow-y: auto;
+    margin-top: 40px;
+    margin-bottom: 50px;
+}
+
+.patient-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+table th {
+    background: linear-gradient(135deg, #4a4a4a, #707070);
+    color: #fff;
+    font-weight: bold;
+    text-transform: capitalize;
+    letter-spacing: 1px;
+}
+
+table th:first-child {
+    border-top-left-radius: 10px;
+}
+
+table th:last-child {
+    border-top-right-radius: 10px;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    color: #666;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f4f4f4;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #aaa;
+}
