@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room List</title>
+    <link rel="stylesheet" href="room-list.css">
+    <script src="/components/navbar-loader.js"></script>
+    <script src="/scripts/list_room.js" defer></script>
+</head>
+<body>
+    <div id="navbarContainer"></div>
+    <div class="room-container">
+        <h2>Room List</h2>
+        <div class="filters">
+            <label for="filterStatus">Filter by:</label>
+            <select id="filterStatus" class="form-select">
+                <option value="all">All Rooms</option>
+                <option value="empty">Empty Rooms</option>
+                <option value="assigned">Assigned Rooms</option>
+            </select>
+        </div>
+        <div id="loadingSpinner" class="loading-spinner">Loading...</div>
+        <table id="roomsTable" class="table table-striped" style="display: none;">
+            <thead>
+                <tr>
+                    <th>Room Number</th>
+                    <th>Room Type</th>
+                    <th>Status</th>
+                    <th>Assigned Patient</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Rows will be dynamically populated -->
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
