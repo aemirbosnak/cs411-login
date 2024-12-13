@@ -17,15 +17,11 @@
         <form id="assignRoomForm">
             <input type="text" class="form-control" id="patientId" placeholder="Patient ID" required>
             <input type="text" class="form-control" id="roomNumber" placeholder="Room Number" required>
-            <label for="roomType" class="form-label">Room Type</label>
-            <select id="roomType" class="form-select" required>
-                <option value="" disabled selected>Select Room Type</option>
-                <option value="single">Single</option>
-                <option value="shared">Shared</option>
-                <option value="ICU">ICU</option>
-                <option value="general">General</option>
-            </select>
-            <input type="text" class="form-control" id="assigningStaff" placeholder="Assigning Staff ID" required>
+            <input type="text" class="form-control" id="assignedDoctor" placeholder="Assigned Doctor" required>
+            <textarea class="form-control" id="admissionReason" placeholder="Admission Reason" rows="3" required></textarea>
+            <label for="admissionDate" class="form-label">Admission Date</label>
+            <input type="date" class="form-control" id="admissionDate" required>
+            <textarea class="form-control" id="operationDetails" placeholder="Operation Details (if any)" rows="3"></textarea>
             <button type="submit" class="btn btn-primary">Assign Room</button>
         </form>
     </div>

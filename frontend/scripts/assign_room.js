@@ -10,17 +10,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
     assignRoomForm.addEventListener('submit', function (event) {
         event.preventDefault();
-
-        const staffId = JSON.parse(atob(token.split('.')[1])).email; // Use staff email as ID
         const roomData = {
             patientId: document.getElementById('patientId').value.trim(),
             roomNumber: document.getElementById('roomNumber').value.trim(),
-            roomType: document.getElementById('roomType').value,
-            assigningStaff: staffId
+            assignedDoctor: document.getElementById('assignedDoctor').value.trim(),
+            admissionReason: document.getElementById('admissionReason').value.trim(),
+            admissionDate: document.getElementById('admissionDate').value,
+            operationDetails: document.getElementById('operationDetails').value.trim() || null // Optional field
         };
 
         // Validate required fields
-        if (!roomData.patientId || !roomData.roomNumber || !roomData.roomType) {
+        if (!roomData.patientId || !roomData.roomNumber || !roomData.assignedDoctor || !roomData.admissionReason || !roomData.admissionDate) {
             alert('Please fill out all required fields.');
             return;
         }
@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .catch(error => {
                 console.error('Error:', error);
+                alert('An error occurred. Please try again later.');
             });
     });
 

@@ -10,12 +10,15 @@ document.addEventListener('DOMContentLoaded', function () {
     const loadingSpinner = document.getElementById('loadingSpinner');
     const roomsTable = document.getElementById('roomsTable');
     const filterStatus = document.getElementById('filterStatus');
+    const filterDoctor = document.getElementById('filterDoctor');
     const tbody = roomsTable.querySelector('tbody');
+
+    let allRooms = []; // Cache all rooms for filtering
 
     // Fetch rooms data
     async function fetchRooms() {
         try {
-            const response = await fetch('http://localhost:5003/api/rooms', {
+            const response = await fetch('http://localhost:5003/api/admission/rooms/available', {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -26,12 +29,45 @@ document.addEventListener('DOMContentLoaded', function () {
                 throw new Error('Failed to fetch room data');
             }
 
-            const rooms = await response.json();
-            renderRooms(rooms);
-            return rooms;
+            const data = await response.json();
+            allRooms = data.rooms;
+            renderRooms(allRooms);
         } catch (error) {
             console.error('Error fetching rooms:', error);
+            alert('Error fetching room data. Please try again later.');
         }
+    }
+
+    // Fetch doctors for the filter
+    async function fetchDoctors() {
+        try {
+            const response = await fetch('http://localhost:5003/api/doctors', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch doctor data');
+            }
+
+            const doctors = await response.json();
+            populateDoctorFilter(doctors);
+        } catch (error) {
+            console.error('Error fetching doctors:', error);
+            alert('Error fetching doctor data. Please try again later.');
+        }
+    }
+
+    // Populate doctor filter options
+    function populateDoctorFilter(doctors) {
+        doctors.forEach(doctor => {
+            const option = document.createElement('option');
+            option.value = doctor.email;
+            option.textContent = doctor.name || doctor.email;
+            filterDoctor.appendChild(option);
+        });
     }
 
     // Render rooms into the table
@@ -41,9 +77,12 @@ document.addEventListener('DOMContentLoaded', function () {
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>${room.roomNumber}</td>
-                <td>${room.roomType}</td>
                 <td>${room.status}</td>
                 <td>${room.assignedPatient || 'N/A'}</td>
+                <td>${room.assignedDoctor || 'N/A'}</td>
+                <td>${room.admissionDate || 'N/A'}</td>
+                <td>${room.admissionReason || 'N/A'}</td>
+                <td>${room.operationDetails || 'N/A'}</td>
             `;
             tbody.appendChild(row);
         });
@@ -51,26 +90,36 @@ document.addEventListener('DOMContentLoaded', function () {
         roomsTable.style.display = 'table';
     }
 
-    // Filter rooms by status
-    function filterRooms(status, rooms) {
-        const filteredRooms = rooms.filter(room => {
-            if (status === 'empty') return room.status === 'Empty';
-            if (status === 'assigned') return room.status === 'Assigned';
-            return true; // 'all'
-        });
+    // Filter rooms based on selected filters
+    function filterRooms() {
+        const status = filterStatus.value;
+        const doctor = filterDoctor.value;
+
+        let filteredRooms = allRooms;
+
+        if (status !== 'all') {
+            filteredRooms = filteredRooms.filter(room =>
+                status === 'empty' ? room.status === 'Empty' : room.status === 'Assigned'
+            );
+        }
+
+        if (doctor !== 'all') {
+            filteredRooms = filteredRooms.filter(room => room.assignedDoctor === doctor);
+        }
+
         renderRooms(filteredRooms);
     }
 
-    // Event listener for filter dropdown
-    filterStatus.addEventListener('change', async function () {
-        const status = filterStatus.value;
-        const rooms = await fetchRooms();
-        filterRooms(status, rooms);
-    });
+    // Event listener for filter dropdowns
+    filterStatus.addEventListener('change', filterRooms);
+    filterDoctor.addEventListener('change', filterRooms);
 
     // Initialize page
     (async function init() {
-        const rooms = await fetchRooms();
-        filterRooms('all', rooms); // Default to showing all rooms
+        loadingSpinner.style.display = 'block';
+        roomsTable.style.display = 'none';
+        await fetchRooms();
+        await fetchDoctors();
+        filterRooms(); // Apply default filters
     })();
 });
