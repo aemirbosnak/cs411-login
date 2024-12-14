@@ -23,13 +23,13 @@ def test_add_patient(mock_db):
     patient = add_patient(patient_data)
     assert "_id" in patient
     assert patient["firstName"] == "John"
-    # Verify patient in DB
+    # Verify admission in DB
     db_patient = Config.mongo_db.Patients.find_one({"_id": ObjectId(patient["_id"])})
     assert db_patient["doctorId"] == "doctor@hospital.com"
 
 
 def test_list_patients(mock_db):
-    # Insert a patient for a specific doctor
+    # Insert a admission for a specific doctor
     Config.mongo_db.Patients.insert_one({
         "firstName": "Alice",
         "lastName": "Smith",
@@ -55,7 +55,7 @@ def test_list_admitted_not_in_inpatients(mock_db):
 
 
 def test_add_inpatient(mock_db):
-    # Insert a patient
+    # Insert a admission
     patient_id = Config.mongo_db.Patients.insert_one({"firstName": "Daisy", "doctorId": "doc3@example.com"}).inserted_id
     inpatient_data = {
         "patientId": str(patient_id),

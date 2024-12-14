@@ -28,7 +28,7 @@ def test_assign_doctor_to_patient(mock_db):
 
 
 def test_save_admission_service(mock_db):
-    # Insert a patient
+    # Insert a admission
     pid = Config.mongo_db.Patients.insert_one({"firstName": "AdmitTest"}).inserted_id
     admission_data = {
         "patientId": str(pid),
@@ -89,15 +89,15 @@ def test_update_inpatient_service(mock_db):
 
 
 def test_admission_endpoints(mock_db, test_client):
-    # /api/admission/rooms/available (assuming admin check is relaxed for now)
+    # /api/rooms/rooms/available (assuming admin check is relaxed for now)
     Config.mongo_db.Rooms.insert_one({"roomNumber": "800", "occupied": False})
-    response = test_client.get('/api/admission/rooms/available')
+    response = test_client.get('/api/rooms/rooms/available')
     data = response.get_json()
     assert response.status_code == 200
     assert len(data["rooms"]) == 1
 
-    # /api/admission/waitlist
-    response = test_client.post('/api/admission/waitlist', json={"patientId": "p123"})
+    # /api/rooms/waitlist
+    response = test_client.post('/api/rooms/waitlist', json={"patientId": "p123"})
     data = response.get_json()
     assert response.status_code == 200
     assert data["message"] == "Patient added to waitlist"
