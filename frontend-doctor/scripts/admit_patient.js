@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
     const admitForm = document.getElementById('admitPatientForm');
-    console.log(admitForm)
     const token = localStorage.getItem('token'); // Ensure token is stored in localStorage
 
     if (!token) {
@@ -33,12 +32,6 @@ document.addEventListener('DOMContentLoaded', function () {
             admissionReason: document.getElementById('admissionReason').value.trim(),
             operationDetails: document.getElementById('operationDetails').value.trim() || null // Optional field
         };
-
-        // Validate required fields
-        if (!patientData.firstName || !patientData.lastName || !patientData.dob || !patientData.doctorId || !patientData.admissionReason) {
-            alert('Please fill out all required fields.');
-            return;
-        }
 
         fetch('http://localhost:5003/api/patient/admit', {
             method: 'POST',

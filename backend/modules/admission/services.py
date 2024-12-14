@@ -1,8 +1,11 @@
 from models.patient_model import add_patient, list_patients, update_patient
+import logging
 
+logging.basicConfig(level=logging.INFO)
 
 def admit_patient(data):
-    required_fields = ["firstName", "lastName", "dob", "doctorId", "admissionReason"]
+    logging.info(data)
+    required_fields = ["firstName", "lastName", "dob", "doctorId"]
     if not all(field in data for field in required_fields):
         return {"error": "Missing required patient data."}
 
