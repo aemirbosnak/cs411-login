@@ -4,6 +4,7 @@ from bson import ObjectId
 def create_room(data):
     new_room = {
         "roomNumber": data["roomNumber"],
+        "roomType": data["roomType"],
         "occupied": False,
         "patientId": None,
         "patientFirstName": None,
@@ -36,6 +37,7 @@ def remove_room(room_id):
 def list_rooms():
     rooms = list(Config.mongo_db.Rooms.find({
         "roomNumber": 1,
+        "roomType": 1,
         "occupied": 1,
         "patientFirstName": 1,
         "patientLastName": 1,
@@ -56,6 +58,7 @@ def assign_room(room_id, patient_data):
         {"_id": room_object_id, "occupied": False},  # Only assign if the room is not occupied
         {
             "$set": {
+                "roomType": patient_data["roomType"],
                 "occupied": True,
                 "patientId": patient_data["patientId"],
                 "patientFirstName": patient_data["patientFirstName"],

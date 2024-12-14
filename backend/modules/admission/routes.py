@@ -1,10 +1,12 @@
+import logging
+
 from flask import Blueprint, request, jsonify
 from modules.admission.services import (
     admit_patient,
     update_patient_service,
     get_patients_service,
 )
-from utils import check_admin_role
+from utils import check_doctor_role
 
 patient_bp = Blueprint("admission", __name__, url_prefix="/api/patient")
 
@@ -28,7 +30,8 @@ def update(id):
 
 @patient_bp.route("/list", methods=["GET"])
 def get_admitted():
-    if not check_admin_role(request):
+    logging.info('hey')
+    if not check_doctor_role(request):
         return jsonify({"message": "Unauthorized"}), 403
 
     doctor_id = request.args.get("doctorId")

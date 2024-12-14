@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from modules.room.services import (
+from modules.rooms.services import (
     create_room_service,
     list_rooms_service,
     remove_room_service,

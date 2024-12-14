@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const token = localStorage.getItem('token');
+    console.log(token)
 
     if (!token) {
         alert('Not authorized. Redirecting to login...');
@@ -15,15 +16,22 @@ document.addEventListener('DOMContentLoaded', function () {
     spinner.style.display = 'block'; // Show spinner
     patientsTable.style.display = 'none'; // Hide table initially
 
-    fetch(`http://localhost:5003/api/patient/list`, {
+    const apiUrl = `http://localhost:5003/api/patient/list${doctorId ? `?doctorId=${encodeURIComponent(doctorId)}` : ''}`;
+
+    fetch(apiUrl, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`
         }
     })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
-            if (data.patients) {
+            if (data.patients && data.patients.length > 0) {
                 tableBody.innerHTML = ''; // Clear table before populating
 
                 data.patients.forEach(patient => {
@@ -31,9 +39,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     row.innerHTML = `
                         <td>${patient.firstName}</td>
                         <td>${patient.lastName}</td>
-                        <td>${patient.dob}</td>
+                        <td>${patient.dob || 'N/A'}</td>
                         <td>${patient.gender || 'N/A'}</td>
-                        <td>${patient.address}</td>
+                        <td>${patient.address || 'N/A'}</td>
                         <td>${patient.contactNumber || 'N/A'}</td>
                         <td>${patient.emergencyContact || 'N/A'}</td>
                         <td>${patient.insuranceInfo || 'N/A'}</td>
@@ -49,12 +57,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     tableBody.appendChild(row);
                 });
             } else {
-                tableBody.innerHTML = `<tr><td colspan="12">No patients found.</td></tr>`;
+                tableBody.innerHTML = `<tr><td colspan="16">No patients found.</td></tr>`;
             }
         })
         .catch(error => {
             console.error('Error fetching patients:', error);
-            tableBody.innerHTML = `<tr><td colspan="12">Error loading patients.</td></tr>`;
+            tableBody.innerHTML = `<tr><td colspan="16">Error loading patients.</td></tr>`;
         })
         .finally(() => {
             spinner.style.display = 'none'; // Hide spinner
