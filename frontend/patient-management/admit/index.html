@@ -6,9 +6,15 @@
     <title>Admit Patient</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="/components/navbar-loader.js"></script>
     <script src="/scripts/admit_patient.js"></script>
     <link rel="stylesheet" href="admit.css">
+    <style>
+        .assign-room-container {
+            display: none; /* Initially hidden */
+        }
+    </style>
 </head>
 <body>
     <div id="navbarContainer"></div>
@@ -58,8 +64,31 @@
                 <option value="critical">Critical</option>
             </select>
 
-            <button type="submit" class="btn btn-primary">Admit Patient</button>
+            <button type="button" class="btn btn-secondary mt-3" id="toggleAssignRoom">Assign Room</button>
+
+            <div class="assign-room-container mt-4">
+                <h2>Assign Room</h2>
+                <form id="assignRoomForm">
+                    <input type="text" class="form-control" id="patientId" placeholder="Patient ID" required>
+                    <input type="text" class="form-control" id="roomNumber" placeholder="Room Number" required>
+                    <input type="text" class="form-control" id="assignedDoctor" placeholder="Assigned Doctor" required>
+                    <textarea class="form-control" id="admissionReason" placeholder="Admission Reason" rows="3" required></textarea>
+                    <label for="admissionDate" class="form-label">Admission Date</label>
+                    <input type="date" class="form-control" id="admissionDate" required>
+                    <textarea class="form-control" id="operationDetails" placeholder="Operation Details (if any)" rows="3"></textarea>
+                </form>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">Admit Patient</button>
         </form>
     </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#toggleAssignRoom').on('click', function () {
+                $('.assign-room-container').toggle();
+            });
+        });
+    </script>
 </body>
 </html>
