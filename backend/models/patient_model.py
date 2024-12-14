@@ -18,10 +18,10 @@ def add_patient(data):
         "maritalStatus": data.get('maritalStatus', 'N/A'),
         "complaint": data.get('complaint', 'N/A'),
         "severity": data.get('severity', 'low'),
-        "doctorId": data['doctorId'],
-        "roomNumber": data['roomNumber'],
-        "admissionReason": data['admissionReason'],
-        "admissionDate": data['admissionDate'],
+        "doctorId": data['doctorId', None],
+        "roomNumber": data['roomNumber', None],
+        "admissionReason": data['admissionReason', 'General Checkup'],
+        "admissionDate": data['admissionDate', datetime.now().isoformat()],
         "operationDetails": data.get('operationDetails', None),
         "dischargeDate": data.get('dischargeDate', None),
         "createdAt": datetime.now(),
@@ -53,3 +53,23 @@ def list_patients(doctor_id):
         "dischargeDate": 1
     }))
     return [convert_objectid_to_string(patient) for patient in patients]
+
+
+def update_patient(patient_id, updated_data):
+    try:
+        patient_object_id = ObjectId(patient_id)
+    except Exception:
+        return {"error": "Invalid patient ID format."}
+
+    updated_data["updatedAt"] = datetime.now()
+    result = Config.mongo_db.Patients.find_one_and_update(
+        {"_id": patient_object_id},
+        {"$set": updated_data},
+        return_document=True
+    )
+
+    if result:
+        result["_id"] = str(result["_id"])
+        return result
+    else:
+        return {"error": "Patient not found or update failed."}
