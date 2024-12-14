@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
     spinner.style.display = 'block'; // Show spinner
     patientsTable.style.display = 'none'; // Hide table initially
 
-    fetch(`http://localhost:5000/api/patient/list?doctorId=${doctorId}`, {
+    fetch(`http://localhost:5003/api/patient/list?doctorId=${doctorId}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`

@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patient List</title>
-    <link rel="stylesheet" href="/styles.css">
-
+    <link rel="stylesheet" href="list.css">
     <script src="/components/navbar-loader.js"></script>
     <script src="/scripts/patient_list.js"></script>
 </head>
 <body>
-    <div class="container">
+    <div id="navbarContainer"></div>
+    <div class="patient-container">
         <h2>Admitted Patients</h2>
         <div id="loadingSpinner" class="loading-spinner">Loading...</div>
-        <table id="patientsTable" style="display: none;">
+        <table id="patientsTable" class="table table-striped" style="display: none;">
             <thead>
                 <tr>
                     <th>First Name</th>
@@ -35,5 +35,17 @@
             </tbody>
         </table>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const loadingSpinner = document.getElementById("loadingSpinner");
+            const patientsTable = document.getElementById("patientsTable");
+
+            // Simulate data loading
+            setTimeout(() => {
+                loadingSpinner.style.display = "none";
+                patientsTable.style.display = "table";
+            }, 2000);
+        });
+    </script>
 </body>
 </html>
