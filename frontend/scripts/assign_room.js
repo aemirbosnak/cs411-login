@@ -1,52 +1,44 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const assignRoomForm = document.getElementById('assignRoomForm');
-    const token = localStorage.getItem('token'); // Ensure token is stored in localStorage
+    const addRoomForm = document.getElementById('addRoomForm');
 
-    if (!token) {
-        alert('Not authorized. Redirecting to login...');
-        window.location.href = '/login/';
-        return;
-    }
+    // API base URL
+    const apiBaseUrl = "http://localhost:5003/api/room";
 
-    assignRoomForm.addEventListener('submit', function (event) {
+    // Add Room Form Submission
+    addRoomForm.addEventListener('submit', function (event) {
+        console.log("submit clicked")
         event.preventDefault();
+
         const roomData = {
-            patientId: document.getElementById('patientId').value.trim(),
             roomNumber: document.getElementById('roomNumber').value.trim(),
-            assignedDoctor: document.getElementById('assignedDoctor').value.trim(),
-            admissionReason: document.getElementById('admissionReason').value.trim(),
-            admissionDate: document.getElementById('admissionDate').value,
-            operationDetails: document.getElementById('operationDetails').value.trim() || null // Optional field
+            roomType: document.getElementById('roomType').value,
         };
 
-        // Validate required fields
-        if (!roomData.patientId || !roomData.roomNumber || !roomData.assignedDoctor || !roomData.admissionReason || !roomData.admissionDate) {
-            alert('Please fill out all required fields.');
+        if (!roomData.roomNumber || !roomData.roomType) {
+            alert('Please fill in all required fields.');
             return;
         }
 
-        fetch('http://localhost:5003/api/room/assign', {
+        fetch(`${apiBaseUrl}/create`, {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(roomData)
+            body: JSON.stringify(roomData),
         })
-            .then(response => response.json())
-            .then(data => {
-                if (data.message === 'Room assigned successfully') {
-                    alert('Room assigned successfully!');
-                    assignRoomForm.reset();
+            .then((response) => response.json())
+            .then((data) => {
+                console.log("alert")
+                if (data.error) {
+                    alert(`Error: ${data.error}`);
                 } else {
-                    alert('Error: ' + data.message);
+                    alert('Room successfully added!');
+                    addRoomForm.reset();
                 }
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error('Error:', error);
-                alert('An error occurred. Please try again later.');
+                alert('Failed to add the room.');
             });
     });
-
-    console.log('Event listener attached to room assignment form');
 });

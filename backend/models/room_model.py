@@ -42,7 +42,7 @@ def list_rooms():
         "patientFirstName": 1,
         "patientLastName": 1,
     }))
-
+    return rooms
 
 def assign_room(room_id, patient_data):
     try:

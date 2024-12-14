@@ -6,23 +6,22 @@ from modules.rooms.services import (
     assign_room_service,
 )
 
-room_bp = Blueprint("room", __name__)
+room_bp = Blueprint("room", __name__, url_prefix="/api/room")
 
-
-@room_bp.route("/create_room", methods=["POST"])
+@room_bp.route("/create", methods=["POST"])
 def create_room():
     data = request.json
     result = create_room_service(data)
     return jsonify(result)
 
 
-@room_bp.route("/list_rooms", methods=["GET"])
+@room_bp.route("/list", methods=["GET"])
 def list_rooms():
     result = list_rooms_service()
     return jsonify(result)
 
 
-@room_bp.route("/remove_room/<room_id>", methods=["DELETE"])
+@room_bp.route("/remove/<room_id>", methods=["DELETE"])
 def remove_room(room_id):
     result = remove_room_service(room_id)
     return jsonify(result)

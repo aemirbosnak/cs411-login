@@ -66,7 +66,5 @@ document.addEventListener('DOMContentLoaded', function () {
         loadingSpinner.style.display = 'block';
         roomsTable.style.display = 'none';
         await fetchRooms();
-        await fetchDoctors();
-        filterRooms(); // Apply default filters
     })();
 });
