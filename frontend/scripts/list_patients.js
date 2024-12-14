@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
     spinner.style.display = 'block'; // Show spinner
     patientsTable.style.display = 'none'; // Hide table initially
 
-    fetch(`http://localhost:5003/api/patient/list?doctorId=${doctorId}`, {
+    fetch(`http://localhost:5003/api/patient/list`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`
@@ -41,6 +41,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         <td>${patient.maritalStatus || 'N/A'}</td>
                         <td>${patient.complaint || 'N/A'}</td>
                         <td>${patient.severity || 'N/A'}</td>
+                        <td>${patient.roomNumber || 'N/A'}</td>
+                        <td>${patient.admissionReason || 'N/A'}</td>
+                        <td>${patient.admissionDate || 'N/A'}</td>
+                        <td>${patient.dischargeDate || 'N/A'}</td>
                     `;
                     tableBody.appendChild(row);
                 });

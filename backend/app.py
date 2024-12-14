@@ -3,8 +3,8 @@ from flask_cors import CORS
 
 from config import Config
 from modules.auth.routes import auth_bp
-from modules.patient.routes import patient_bp
-from modules.admission.routes import admission_bp
+from modules.admission.routes import patient_bp
+from modules.rooms.routes import admission_bp
 
 app = Flask(__name__)
 app.config.from_object(Config)
