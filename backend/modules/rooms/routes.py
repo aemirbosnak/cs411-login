@@ -21,9 +21,9 @@ def list_rooms():
     return jsonify(result)
 
 
-@room_bp.route("/remove/<room_id>", methods=["DELETE"])
-def remove_room(room_id):
-    result = remove_room_service(room_id)
+@room_bp.route("/remove/<room_number>", methods=["DELETE"])
+def remove_room(room_number):
+    result = remove_room_service(room_number)
     return jsonify(result)
 
 

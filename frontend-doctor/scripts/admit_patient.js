@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', function () {
             lastName: document.getElementById('lastName').value.trim(),
             dob: document.getElementById('dob').value,
             doctorId: doctorId,
-            admissionReason: document.getElementById('admissionReason').value.trim(),
             gender: document.getElementById('gender').value || 'N/A', // Optional field
             address: document.getElementById('address').value.trim() || 'N/A',
             contactNumber: document.getElementById('contactNumber').value.trim() || 'N/A',
@@ -31,6 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
             severity: document.getElementById('severity').value || 'low', // Default to "low"
             roomNumber: document.getElementById('roomNumber').value.trim() || null,
             admissionDate: document.getElementById('admissionDate').value || new Date().toISOString(),
+            admissionReason: document.getElementById('admissionReason').value.trim(),
             operationDetails: document.getElementById('operationDetails').value.trim() || null // Optional field
         };
 

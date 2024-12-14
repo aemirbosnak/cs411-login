@@ -13,13 +13,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Load the navbar.html
-    fetch('/components/admin/navbar.html')
+    fetch('/components/navbar.html')
         .then(response => response.text())
         .then(html => {
             navbarContainer.innerHTML = html;
 
             // Load the navbar.css dynamically
-            loadCSS('/components/admin/navbar.css');
+            loadCSS('/components/navbar.css');
 
             // Add logout functionality
             const logoutButton = document.getElementById('logoutButton');

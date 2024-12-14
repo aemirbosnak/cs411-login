@@ -1,5 +1,7 @@
 from config import Config
 from bson import ObjectId
+from . import convert_objectid_to_string
+
 
 def create_room(data):
     new_room = {
@@ -15,34 +17,22 @@ def create_room(data):
     return new_room
 
 
-def remove_room(room_id):
-    # Convert the room_id to ObjectId format if it's a valid string
-    try:
-        room_object_id = ObjectId(room_id)
-    except Exception as e:
-        return {"error": "Invalid room ID format."}
-
+def remove_room(room_number):
     # Find and delete the room
-    result = Config.mongo_db.Rooms.find_one_and_delete({"_id": room_object_id})
+    result = Config.mongo_db.Rooms.find_one_and_delete({"roomNumber": room_number})
 
     if result:
         # Successfully deleted the room
-        result["_id"] = str(result["_id"])  # Convert ObjectId to string for consistency
-        return {"message": "Room successfully removed.", "room": result}
+        return {"message": "Room successfully removed.", "room": result["roomNumber"]}
     else:
         # Room not found
         return {"error": "Room not found."}
 
 
 def list_rooms():
-    rooms = list(Config.mongo_db.Rooms.find({
-        "roomNumber": 1,
-        "roomType": 1,
-        "occupied": 1,
-        "patientFirstName": 1,
-        "patientLastName": 1,
-    }))
-    return rooms
+    rooms = list(Config.mongo_db.Rooms.find())
+    return [convert_objectid_to_string(room) for room in rooms]
+
 
 def assign_room(room_id, patient_data):
     try:

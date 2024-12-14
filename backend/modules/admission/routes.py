@@ -30,7 +30,6 @@ def update(id):
 
 @patient_bp.route("/list", methods=["GET"])
 def get_admitted():
-    logging.info('hey')
     if not check_doctor_role(request):
         return jsonify({"message": "Unauthorized"}), 403
 

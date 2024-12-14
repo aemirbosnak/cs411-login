@@ -13,11 +13,11 @@ def list_rooms_service():
     return {"rooms": rooms}
 
 
-def remove_room_service(room_id):
-    if not room_id:
+def remove_room_service(room_number):
+    if not room_number:
         return {"error": "Room ID is required."}
 
-    return remove_room(room_id)
+    return remove_room(room_number)
 
 
 def assign_room_service(room_id, patient_data):
