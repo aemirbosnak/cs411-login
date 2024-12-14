@@ -4,7 +4,7 @@ from bson import ObjectId
 from . import convert_objectid_to_string
 
 def add_patient(data):
-    """Add a patient to the database."""
+    """Add a admission to the database."""
     new_patient = {
         "firstName": data['firstName'],
         "lastName": data['lastName'],
@@ -19,6 +19,11 @@ def add_patient(data):
         "complaint": data.get('complaint', 'N/A'),
         "severity": data.get('severity', 'low'),
         "doctorId": data['doctorId'],
+        "roomNumber": data['roomNumber'],
+        "admissionReason": data['admissionReason'],
+        "admissionDate": data['admissionDate'],
+        "operationDetails": data.get('operationDetails', None),
+        "dischargeDate": data.get('dischargeDate', None),
         "createdAt": datetime.now(),
         "updatedAt": datetime.now()
     }
@@ -41,14 +46,10 @@ def list_patients(doctor_id):
         "occupation": 1,
         "maritalStatus": 1,
         "complaint": 1,
-        "severity": 1
+        "severity": 1,
+        "roomNumber": 1,
+        "admissionReason": 1,
+        "admissionDate": 1,
+        "dischargeDate": 1
     }))
     return [convert_objectid_to_string(patient) for patient in patients]
-
-
-def list_admitted_patients_not_in_inpatients():
-    admitted_patient_ids = Config.mongo_db.Patients.distinct("_id")
-    inpatient_patient_ids = Config.mongo_db.Inpatients.distinct("patientId")
-    difference = set(admitted_patient_ids) - set(inpatient_patient_ids)
-    patients = list(Config.mongo_db.Patients.find({"_id": {"$in": list(difference)}}))
-    return [convert_objectid_to_string(p) for p in patients]

@@ -1,76 +1,24 @@
-from models.admission_model import add_inpatient, list_inpatients, list_doctor_inpatients, update_inpatient
-from models.patient_model import list_admitted_patients_not_in_inpatients
-from models.room_model import list_available_rooms, assign_room, free_room
+from models.patient_model import add_patient, list_patients
 
-WAITLIST = []  # In-memory waitlist. For production, store in DB
-
-
-def search_patient(query):
-    # This would call patient services or models to find patient by query
-    # For demo, return a fake result
-    if query == "John Doe":
-        return {"patientId": "some_patient_id", "found": True}
-    return {"found": False}
+# Temporary storage for partial data, for demo only
+TEMP_DATA = {}
 
 
-def place_on_waitlist(patient_id):
-    WAITLIST.append(patient_id)
-    return True
+def admit_patient(data):
+    # Called after validate ensures data is good
+    return add_patient(data)
 
 
-def assign_doctor_to_patient(patient_id, doctor_id):
-    # In reality, you'd update the inpatient record or patient record to link doctor
-    # Not implemented in the model yet, but you could extend `update_inpatient` or create a new method
-    # For demo:
-    return True
+def update_patient(patient_id, updated_data):
+    # Here you would implement admission update logic by:
+    # - Finding admission by patient_id
+    # - Merging updated_data with existing fields
+    # - Calling a model function to update in DB (not implemented above)
+    # For demo, just return updated_data
+    # TODO: Implement actual update in `patient_model.py` if needed
+    return updated_data
 
 
-def save_admission(data):
-    # Validate data fields first
-    required_fields = ['patientId', 'roomNumber', 'assignedDoctor', 'admissionReason', 'admissionDate']
-    if not all(field in data for field in required_fields):
-        raise ValueError("Missing required fields")
+def get_patients():
+    return list_patients()
 
-    # Create inpatient record
-    inpatient = add_inpatient(data)
-    return inpatient
-
-
-def get_admission_summary(admission_id):
-    # For a real summary, you need patient, room, doctor info
-    # Could query patient by `inpatient['patientId']`, room by `roomNumber`, etc.
-    # For demo:
-    return {
-        "admissionId": admission_id,
-        "patient": {"firstName": "John", "lastName": "Doe"},
-        "room": {"roomNumber": "101"},
-        "doctor": {"email": "doctor@hospital.com"},
-        "admissionDetails": {"admissionReason": "Surgery", "admissionDate": "2024-12-10"}
-    }
-
-
-def get_available_rooms_service():
-    return list_available_rooms()
-
-
-def assign_room_service(patient_id, room_number):
-    # Ensure the room is available before assigning
-    available_rooms = list_available_rooms()
-    if any(r['roomNumber'] == room_number for r in available_rooms):
-        assign_room(room_number, patient_id)
-        return True
-    else:
-        return False
-
-
-def list_all_inpatients_service():
-    return list_inpatients()
-
-
-def list_doctor_inpatients_service(doctor_email):
-    return list_doctor_inpatients(doctor_email)
-
-
-def update_inpatient_service(inpatient_id, updates):
-    update_inpatient(inpatient_id, updates)
-    return True

@@ -25,7 +25,11 @@ document.addEventListener('DOMContentLoaded', function () {
             maritalStatus: document.getElementById('maritalStatus').value,
             complaint: document.getElementById('complaint').value,
             severity: document.getElementById('severity').value,
-            doctorId: doctorId
+            doctorId: doctorId,
+            roomNumber: document.getElementById('roomNumber').value.trim(),
+            admissionReason: document.getElementById('admissionReason').value.trim(),
+            admissionDate: document.getElementById('admissionDate').value,
+            operationDetails: document.getElementById('operationDetails').value.trim() || null // Optional field
         };
 
         // Validate required fields

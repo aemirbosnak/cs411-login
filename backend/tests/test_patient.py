@@ -45,12 +45,12 @@ def test_admit_patient_service(mock_db):
 
 
 def test_update_patient_data(mock_db):
-    # Insert a patient first
+    # Insert a admission first
     pid = Config.mongo_db.Patients.insert_one({"firstName": "Old", "lastName": "Name"}).inserted_id
     updated_data = {"lastName": "NewName"}
     result = update_patient_data(str(pid), updated_data)
     # This is a placeholder since we didn't implement actual update in services
-    # In a real scenario, you'd now fetch the patient and confirm lastName changed.
+    # In a real scenario, you'd now fetch the admission and confirm lastName changed.
     # Assuming update_patient_data returns updated_data for now.
     assert result["lastName"] == "NewName"
 
@@ -74,8 +74,8 @@ def test_get_admitted_not_in_inpatients_service(mock_db):
 
 
 def test_patient_endpoints(mock_db, test_client):
-    # Test /api/patient/admit endpoint
-    response = test_client.post('/api/patient/admit', json={
+    # Test /api/admission/admit endpoint
+    response = test_client.post('/api/admission/admit', json={
         "firstName": "Test",
         "lastName": "Patient",
         "dob": "1990-01-01",
@@ -86,10 +86,10 @@ def test_patient_endpoints(mock_db, test_client):
     assert response.status_code == 201
     assert data["message"] == "Patient admitted successfully"
 
-    # Test /api/patient/list endpoint
-    # Insert another patient manually
+    # Test /api/admission/list endpoint
+    # Insert another admission manually
     Config.mongo_db.Patients.insert_one({"firstName": "Another", "doctorId": "doc@example.com"})
-    response = test_client.get('/api/patient/admitted')
+    response = test_client.get('/api/admission/admitted')
     data = response.get_json()
     assert response.status_code == 200
     assert len(data["patients"]) >= 1

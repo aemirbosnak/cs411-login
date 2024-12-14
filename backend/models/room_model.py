@@ -8,7 +8,7 @@ def list_available_rooms():
 
 
 def assign_room(room_number, patient_id):
-    """Mark a room as occupied and link it to a patient."""
+    """Mark a room as occupied and link it to a admission."""
     Config.mongo_db.Rooms.update_one({"roomNumber": room_number}, {"$set": {"occupied": True, "patientId": ObjectId(patient_id)}})
     return True
 
