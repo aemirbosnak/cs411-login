@@ -57,3 +57,17 @@ def assign_room(room_number, patient_data):
         return {"error": "Room not found or already occupied."}
 
     return {"message": "Patient successfully assigned to the room."}
+
+
+def availability(room_number):
+    room = Config.mongo_db.Rooms.find_one({"roomNumber": room_number})
+
+    # Check if the room exists
+    if not room:
+        return {"error": f"Room {room_number} does not exist."}
+
+    # Check if the room is already occupied
+    if room.get("occupied", True):
+        return {"error": f"Room {room_number} is already occupied."}
+
+    return {"message": "Room is available."}

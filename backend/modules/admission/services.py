@@ -1,14 +1,16 @@
 from models.patient_model import add_patient, list_patients, update_patient
-from models.room_model import assign_room
-import logging
-
-logging.basicConfig(level=logging.INFO)
+from models.room_model import assign_room, availability
 
 def admit_patient(data):
-    logging.info(data)
     required_fields = ["firstName", "lastName", "dob", "doctorId"]
     if not all(field in data for field in required_fields):
         return {"error": "Missing required patient data."}
+
+    if "roomNumber" in data and data["roomNumber"]:
+        # Verify the room exists and is available
+        room_check_result = availability(data["roomNumber"])
+        if "error" in room_check_result:
+            return room_check_result
 
     new_patient = add_patient(data)
 
@@ -24,7 +26,7 @@ def admit_patient(data):
         # Attempt to assign the room
         room_assignment_result = assign_room(data["roomNumber"], room_data)
         if "error" in room_assignment_result:
-            return room_assignment_result  # Return error if room assignment fails
+            return room_assignment_result
 
     return new_patient
 
