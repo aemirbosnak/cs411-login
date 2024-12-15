@@ -51,11 +51,10 @@ document.addEventListener('DOMContentLoaded', function () {
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>${room.roomNumber}</td>
+                <td>${room.roomType}</td>
                 <td>${room.occupied ? 'Assigned' : 'Empty'}</td>
+                <td>${room.assignedDoctor || 'N/A'}</td>
                 <td>${room.patientFirstName && room.patientLastName ? `${room.patientFirstName} ${room.patientLastName}` : 'N/A'}</td>
-                <td>${room.admissionDate || 'N/A'}</td>
-                <td>${room.admissionReason || 'N/A'}</td>
-                <td>${room.operationDetails || 'N/A'}</td>
             `;
             tbody.appendChild(row);
         });
