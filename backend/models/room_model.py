@@ -8,6 +8,7 @@ def create_room(data):
         "roomNumber": data["roomNumber"],
         "roomType": data["roomType"],
         "occupied": False,
+        "assignedDoctor": None,
         "patientId": None,
         "patientFirstName": None,
         "patientLastName": None,
@@ -34,22 +35,17 @@ def list_rooms():
     return [convert_objectid_to_string(room) for room in rooms]
 
 
-def assign_room(room_id, patient_data):
-    try:
-        room_object_id = ObjectId(room_id)
-    except Exception as e:
-        return {"error": "Invalid room ID format."}
-
+def assign_room(room_number, patient_data):
     required_fields = ["patientId", "patientFirstName", "patientLastName"]
     if not all(field in patient_data for field in required_fields):
         return {"error": "Incomplete patient data provided."}
 
     update_result = Config.mongo_db.Rooms.update_one(
-        {"_id": room_object_id, "occupied": False},  # Only assign if the room is not occupied
+        {"roomNumber": room_number, "occupied": False},  # Only assign if the room is not occupied
         {
             "$set": {
-                "roomType": patient_data["roomType"],
                 "occupied": True,
+                "assignedDoctor": patient_data["assignedDoctor"],
                 "patientId": patient_data["patientId"],
                 "patientFirstName": patient_data["patientFirstName"],
                 "patientLastName": patient_data["patientLastName"],

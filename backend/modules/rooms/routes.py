@@ -25,10 +25,3 @@ def list_rooms():
 def remove_room(room_number):
     result = remove_room_service(room_number)
     return jsonify(result)
-
-
-@room_bp.route("/assign_room/<room_id>", methods=["POST"])
-def assign_room(room_id):
-    patient_data = request.json
-    result = assign_room_service(room_id, patient_data)
-    return jsonify(result)
