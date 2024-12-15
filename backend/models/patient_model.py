@@ -10,7 +10,7 @@ def add_patient(data):
         "lastName": data['lastName'],
         "dob": data['dob'],
         "gender": data.get('gender', 'N/A'),
-        "address": data['address'],
+        "address": data.get('address', 'N/A'),
         "contactNumber": data.get('contactNumber', 'N/A'),
         "emergencyContact": data.get('emergencyContact', 'N/A'),
         "insuranceInfo": data.get('insuranceInfo', 'N/A'),

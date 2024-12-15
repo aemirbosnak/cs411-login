@@ -1,103 +1,132 @@
 import pytest
-from config import Config
 from bson import ObjectId
-from modules.admission.services import (
-    search_patient, place_on_waitlist, assign_doctor_to_patient, save_admission,
-    get_admission_summary, get_available_rooms_service, assign_room_service,
-    list_all_inpatients_service, list_doctor_inpatients_service, update_inpatient_service
-)
+from config import Config
+from modules.admission.services import admit_patient, update_patient_service, get_patients_service
 
 
-def test_search_patient_service(mock_db):
-    # Assuming search_patient returns a dict with found: bool
-    result = search_patient("John Doe")
-    # With current mock logic, "John Doe" = found
-    assert "found" in result
+@pytest.fixture(scope="function")
+def setup_patients_and_rooms(mock_db):
+    # Add a doctor to assign to patients
+    Config.mongo_db.Users.insert_one({
+        "_id": ObjectId(),
+        "email": "doctor@hospital.com",
+        "firstName": "Bob",
+        "lastName": "Doctor",
+        "password": "hashedpassword",
+        "role": "doctor"
+    })
+
+    # Insert available rooms
+    Config.mongo_db.Rooms.insert_many([
+        {
+            "_id": ObjectId(),
+            "roomNumber": "101",
+            "roomType": "Deluxe",
+            "occupied": False,
+            "assignedDoctor": None,
+            "patientId": None,
+            "patientFirstName": None,
+            "patientLastName": None
+        },
+        {
+            "_id": ObjectId(),
+            "roomNumber": "102",
+            "roomType": "Standard",
+            "occupied": True,  # Already occupied
+            "assignedDoctor": "doctorId",
+            "patientId": ObjectId(),
+            "patientFirstName": "John",
+            "patientLastName": "Doe"
+        }
+    ])
 
 
-def test_place_on_waitlist(mock_db):
-    success = place_on_waitlist("patient_id")
-    assert success is True
-    # Check WAITLIST if accessible from services (not in final code)
-    # Just trust return value for now.
-
-
-def test_assign_doctor_to_patient(mock_db):
-    success = assign_doctor_to_patient("patient_id", "doctor_id")
-    assert success is True
-
-
-def test_save_admission_service(mock_db):
-    # Insert a admission
-    pid = Config.mongo_db.Patients.insert_one({"firstName": "AdmitTest"}).inserted_id
-    admission_data = {
-        "patientId": str(pid),
+def test_admit_patient_with_room_success(mock_db, setup_patients_and_rooms):
+    # Admit a patient into an available room
+    data = {
+        "firstName": "Alice",
+        "lastName": "Brown",
+        "dob": "1992-05-14",
+        "doctorId": "doctorId",
         "roomNumber": "101",
-        "assignedDoctor": "doc@hospital.com",
-        "admissionReason": "Test Reason",
-        "admissionDate": "2025-01-01"
+        "admissionReason": "Routine Checkup"
     }
-    inpatient = save_admission(admission_data)
-    assert "patientId" in inpatient
-    db_inpatient = Config.mongo_db.Inpatients.find_one({"_id": ObjectId(inpatient["_id"])})
-    assert db_inpatient is not None
 
+    result = admit_patient(data)
 
-def test_get_admission_summary(mock_db):
-    summary = get_admission_summary("admission_id")
-    # Returns dummy data in current implementation
-    assert "admissionId" in summary
+    assert "error" not in result
+    assert result["firstName"] == "Alice"
+    assert result["roomNumber"] == "101"
 
-
-def test_get_available_rooms_service(mock_db):
-    # Insert a free room
-    Config.mongo_db.Rooms.insert_one({"roomNumber": "300", "occupied": False})
-    rooms = get_available_rooms_service()
-    assert len(rooms) == 1
-    assert rooms[0]["roomNumber"] == "300"
-
-
-def test_assign_room_service(mock_db):
-    Config.mongo_db.Rooms.insert_one({"roomNumber": "400", "occupied": False})
-    success = assign_room_service("507f1f77bcf86cd799439011", "400")
-    assert success is True
-    room = Config.mongo_db.Rooms.find_one({"roomNumber": "400"})
+    # Verify the room is now marked as occupied
+    room = Config.mongo_db.Rooms.find_one({"roomNumber": "101"})
     assert room["occupied"] is True
-    assert str(room["patientId"]) == "507f1f77bcf86cd799439011"
-    
-
-def test_list_all_inpatients_service(mock_db):
-    Config.mongo_db.Inpatients.insert_one({"patientId": ObjectId(), "roomNumber": "500", "assignedDoctor": "doc9@example.com"})
-    inpatients = list_all_inpatients_service()
-    assert len(inpatients) == 1
-    assert inpatients[0]["roomNumber"] == "500"
+    assert room["patientFirstName"] == "Alice"
+    assert room["patientLastName"] == "Brown"
 
 
-def test_list_doctor_inpatients_service(mock_db):
-    Config.mongo_db.Inpatients.delete_many({})
-    Config.mongo_db.Inpatients.insert_one({"patientId": ObjectId(), "assignedDoctor": "doc10@example.com", "roomNumber": "601"})
-    inpatients = list_doctor_inpatients_service("doc10@example.com")
-    assert len(inpatients) == 1
-    assert inpatients[0]["roomNumber"] == "601"
+def test_admit_patient_room_not_available(mock_db, setup_patients_and_rooms):
+    # Attempt to admit a patient into an occupied room
+    data = {
+        "firstName": "Charlie",
+        "lastName": "Smith",
+        "dob": "1985-07-22",
+        "doctorId": "doctorId",
+        "roomNumber": "102",  # This room is already occupied
+        "admissionReason": "Observation"
+    }
+
+    result = admit_patient(data)
+
+    assert "error" in result
+    assert result["error"] == "Room 102 is already occupied."
 
 
-def test_update_inpatient_service(mock_db):
-    inp_id = Config.mongo_db.Inpatients.insert_one({"patientId": ObjectId(), "roomNumber": "700"}).inserted_id
-    update_inpatient_service(str(inp_id), {"roomNumber": "701"})
-    updated = Config.mongo_db.Inpatients.find_one({"_id": inp_id})
-    assert updated["roomNumber"] == "701"
+def test_admit_patient_no_room(mock_db, setup_patients_and_rooms):
+    # Admit a patient without specifying a room
+    data = {
+        "firstName": "Diana",
+        "lastName": "Jones",
+        "dob": "1990-01-01",
+        "doctorId": "doctorId",
+        "admissionReason": "General Checkup"
+    }
+
+    result = admit_patient(data)
+
+    assert "error" not in result
+    assert result["firstName"] == "Diana"
+    assert result["roomNumber"] is None
+
+def test_get_patients_service(mock_db, setup_patients_and_rooms):
+    # Add a patient assigned to a doctor
+    Config.mongo_db.Patients.insert_one({
+        "_id": ObjectId(),
+        "firstName": "John",
+        "lastName": "Doe",
+        "doctorId": "doctorId",
+        "roomNumber": "101"
+    })
+
+    # Call the service to get patients for the doctor
+    patients = get_patients_service("doctorId")
+
+    assert len(patients) == 1
+    assert patients[0]["firstName"] == "John"
 
 
-def test_admission_endpoints(mock_db, test_client):
-    # /api/rooms/rooms/available (assuming admin check is relaxed for now)
-    Config.mongo_db.Rooms.insert_one({"roomNumber": "800", "occupied": False})
-    response = test_client.get('/api/rooms/rooms/available')
-    data = response.get_json()
-    assert response.status_code == 200
-    assert len(data["rooms"]) == 1
+def test_update_patient_service(mock_db, setup_patients_and_rooms):
+    # Add a patient to update
+    patient_id = Config.mongo_db.Patients.insert_one({
+        "_id": ObjectId(),
+        "firstName": "Eve",
+        "lastName": "Taylor",
+        "doctorId": "doctorId"
+    }).inserted_id
 
-    # /api/rooms/waitlist
-    response = test_client.post('/api/rooms/waitlist', json={"patientId": "p123"})
-    data = response.get_json()
-    assert response.status_code == 200
-    assert data["message"] == "Patient added to waitlist"
+    # Update the patient's last name
+    updated_data = {"lastName": "Johnson"}
+    result = update_patient_service(str(patient_id), updated_data)
+
+    assert "error" not in result
+    assert result["lastName"] == "Johnson"
